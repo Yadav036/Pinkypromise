@@ -1,0 +1,52 @@
+6:07:04 PM [express] GET /api/auth/me 403 in 3029ms :: {"error":"Invalid token"}
+6:07:07 PM [express] GET /api/auth/me 403 in 814ms :: {"error":"Invalid token"}
+6:07:12 PM [express] GET /api/auth/me 403 in 227ms :: {"error":"Invalid token"}
+6:07:23 PM [express] GET /api/auth/me 403 in 462ms :: {"error":"Invalid token"}
+6:07:26 PM [express] GET /api/auth/me 403 in 232ms :: {"error":"Invalid token"}
+6:07:32 PM [express] GET /api/auth/me 403 in 234ms :: {"error":"Invalid token"}
+6:07:38 PM [express] GET /api/auth/me 403 in 227ms :: {"error":"Invalid token"}
+6:07:41 PM [express] GET /api/auth/me 403 in 459ms :: {"error":"Invalid token"}
+6:08:07 PM [express] POST /api/auth/login/options 400 in 735ms :: {"error":"User not found"}
+6:08:16 PM [express] POST /api/auth/register/options 200 in 237ms :: {"challenge":"MNRxsxgRlDdVB9t4q…
+6:08:21 PM [express] POST /api/auth/register/verify 200 in 927ms :: {"verified":true,"token":"eyJhbG…
+6:08:21 PM [express] GET /api/auth/me 200 in 231ms :: {"user":{"id":"0e6c3166-be0a-4eaf-bae8-e2d195a…
+6:08:22 PM [express] GET /api/promises 200 in 685ms :: {"promises":[]}
+6:08:25 PM [express] GET /api/users 200 in 1021ms :: {"users":[]}
+Promise creation error: PrismaClientKnownRequestError: 
+Invalid `db.promise.create()` invocation in
+/Users/yadav/Downloads/AuthShare/server/routes.ts:262:40
+
+  259   fingerprintData
+  260 );
+  261 
+→ 262 const promise = await db.promise.create(
+Foreign key constraint violated on the constraint: `promises_recipientId_fkey`
+    at ei.handleRequestError (/Users/yadav/Downloads/AuthShare/node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:13)
+    at ei.handleAndLogRequestError (/Users/yadav/Downloads/AuthShare/node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:12)
+    at ei.request (/Users/yadav/Downloads/AuthShare/node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:12)
+    at async a (/Users/yadav/Downloads/AuthShare/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:24)
+    at async <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:262:23) {
+  code: 'P2003',
+  meta: { modelName: 'Promise', constraint: 'promises_recipientId_fkey' },
+  clientVersion: '6.14.0'
+}
+6:09:09 PM [express] POST /api/promises 400 in 2117ms :: {"error":"Failed to create promise"}
+Promise creation error: PrismaClientKnownRequestError: 
+Invalid `db.promise.create()` invocation in
+/Users/yadav/Downloads/AuthShare/server/routes.ts:262:40
+
+  259   fingerprintData
+  260 );
+  261 
+→ 262 const promise = await db.promise.create(
+Foreign key constraint violated on the constraint: `promises_recipientId_fkey`
+    at ei.handleRequestError (/Users/yadav/Downloads/AuthShare/node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:13)
+    at ei.handleAndLogRequestError (/Users/yadav/Downloads/AuthShare/node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:12)
+    at ei.request (/Users/yadav/Downloads/AuthShare/node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:12)
+    at async a (/Users/yadav/Downloads/AuthShare/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:24)
+    at async <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:262:23) {
+  code: 'P2003',
+  meta: { modelName: 'Promise', constraint: 'promises_recipientId_fkey' },
+  clientVersion: '6.14.0'
+}
+6:09:12 PM [express] POST /api/promises 400 in 997ms :: {"error":"Failed to create promise"}

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureShare - WebAuthn File Sharing Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 font-sans">
+    <!-- @COMPONENT: App [main application container] -->
+    <div id="app" class="min-h-screen">
+        <!-- Header -->
+        <!-- @COMPONENT: Header [navigation and user info] -->
+        <header class="bg-white shadow-sm border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-primary-500 text-2xl mr-3"></i>
+                        <h1 class="text-xl font-bold text-slate-900">SecureShare</h1>
+                        <span class="ml-2 text-sm text-slate-500">WebAuthn Platform</span>
+                    </div>
+                    
+                    <!-- @STATE: isAuthenticated:boolean = false -->
+                    <div class="flex items-center space-x-4" id="header-auth-section">
+                        <!-- Unauthenticated state -->
+                        <div id="auth-buttons" class="flex space-x-3">
+                            <button data-event="click:showLogin" class="text-slate-600 hover:text-slate-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                Sign In
+                            </button>
+                            <button data-event="click:showRegister" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                Get Started
+                            </button>
+                        </div>
+                        
+                        <!-- Authenticated state (hidden by default) -->
+                        <div id="user-menu" class="hidden flex items-center space-x-4">
+                            <div class="flex items-center space-x-2">
+                                <span data-bind="user.role" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Admin
+                                </span>
+                                <span data-bind="user.username" class="text-sm font-medium text-slate-700">john_doe</span>
+                            </div>
+                            <button data-event="click:logout" class="text-slate-500 hover:text-slate-700 transition-colors">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- @END_COMPONENT: Header -->
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Welcome/Landing Section -->
+            <!-- @COMPONENT: WelcomeSection [landing page for unauthenticated users] -->
+            <div id="welcome-section" class="text-center py-12">
+                <div class="max-w-3xl mx-auto">
+                    <i class="fas fa-fingerprint text-6xl text-primary-500 mb-6"></i>
+                    <h2 class="text-4xl font-bold text-slate-900 mb-4">Passwordless File Sharing</h2>
+                    <p class="text-xl text-slate-600 mb-8">
+                        Secure file sharing with WebAuthn biometric authentication. No passwords required.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-3 gap-8 mt-12">
+                        <div class="text-center">
+                            <div class="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-shield-check text-primary-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-semibold text-slate-900 mb-2">Secure Authentication</h3>
+                            <p class="text-slate-600 text-sm">Use your fingerprint or Face ID for secure, passwordless login</p>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-cloud-upload-alt text-green-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-semibold text-slate-900 mb-2">Easy File Sharing</h3>
+                            <p class="text-slate-600 text-sm">Upload and download files securely with role-based access</p>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-users-cog text-blue-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-semibold text-slate-900 mb-2">Role Management</h3>
+                            <p class="text-slate-600 text-sm">Admin and user roles with appropriate access controls</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: WelcomeSection -->
+
+            <!-- Authentication Forms -->
+            <!-- @COMPONENT: AuthForms [login and registration forms] -->
+            <div id="auth-forms" class="hidden">
+                <!-- Registration Form -->
+                <div id="register-form" class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-user-plus text-3xl text-primary-500 mb-3"></i>
+                        <h3 class="text-2xl font-bold text-slate-900">Create Account</h3>
+                        <p class="text-slate-600 mt-2">Register with your biometric authenticator</p>
+                    </div>
+
+                    <form data-event="submit:handleRegister">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="register-username" class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                                <input type="text" id="register-username" data-bind="form.username" required 
+                                       class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                       placeholder="Enter your username">
+                            </div>
+
+                            <div>
+                                <label for="register-role" class="block text-sm font-medium text-slate-700 mb-1">Role</label>
+                                <select id="register-role" data-bind="form.role" required 
+                                        class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <option value="">Select your role</option>
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+
+                            <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-fingerprint text-blue-500 mr-2"></i>
+                                    <span class="text-sm text-blue-700">We'll use your device's biometric authenticator for secure registration</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" data-implementation="Should trigger WebAuthn registration flow"
+                                    class="w-full bg-primary-500 hover:bg-primary-600 text-white py-2 px-4 rounded-md font-medium transition-colors flex items-center justify-center">
+                                <i class="fas fa-fingerprint mr-2"></i>
+                                Register with Biometrics
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-6 text-center">
+                        <button data-event="click:showLogin" class="text-primary-500 hover:text-primary-600 text-sm font-medium">
+                            Already have an account? Sign in
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Login Form -->
+                <div id="login-form" class="hidden max-w-md mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-sign-in-alt text-3xl text-primary-500 mb-3"></i>
+                        <h3 class="text-2xl font-bold text-slate-900">Welcome Back</h3>
+                        <p class="text-slate-600 mt-2">Sign in with your biometric authenticator</p>
+                    </div>
+
+                    <form data-event="submit:handleLogin">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="login-username" class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                                <input type="text" id="login-username" data-bind="form.username" required 
+                                       class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                       placeholder="Enter your username">
+                            </div>
+
+                            <div class="bg-green-50 border border-green-200 rounded-md p-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-shield-check text-green-500 mr-2"></i>
+                                    <span class="text-sm text-green-700">Touch your fingerprint sensor or use Face ID to sign in</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" data-implementation="Should trigger WebAuthn login flow"
+                                    class="w-full bg-primary-500 hover:bg-primary-600 text-white py-2 px-4 rounded-md font-medium transition-colors flex items-center justify-center">
+                                <i class="fas fa-fingerprint mr-2"></i>
+                                Sign In with Biometrics
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-6 text-center">
+                        <button data-event="click:showRegister" class="text-primary-500 hover:text-primary-600 text-sm font-medium">
+                            Don't have an account? Register
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: AuthForms -->
+
+            <!-- Dashboard -->
+            <!-- @COMPONENT: Dashboard [authenticated user dashboard] -->
+            <div id="dashboard" class="hidden space-y-8">
+                <!-- User Info Card -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-primary-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-primary-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900" data-bind="user.username">john_doe</h3>
+                                <div class="flex items-center space-x-2">
+                                    <span data-bind="user.role" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Admin
+                                    </span>
+                                    <span class="text-sm text-slate-500">Authenticated with WebAuthn</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 text-green-600">
+                            <i class="fas fa-shield-check"></i>
+                            <span class="text-sm font-medium">Secure Session</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Upload Section -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+                        <i class="fas fa-cloud-upload-alt text-primary-500 mr-2"></i>
+                        Upload Files
+                    </h4>
+                    
+                    <div class="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:border-primary-400 transition-colors">
+                        <input type="file" id="file-upload" multiple class="hidden" data-implementation="Handle file upload with JWT verification">
+                        <label for="file-upload" class="cursor-pointer">
+                            <i class="fas fa-upload text-4xl text-slate-400 mb-4"></i>
+                            <p class="text-slate-600 mb-2">Click to upload files or drag and drop</p>
+                            <p class="text-sm text-slate-500">Supports multiple file formats</p>
+                        </label>
+                    </div>
+
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-sm text-slate-500">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Files are secured with your JWT token
+                        </div>
+                        <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                            <i class="fas fa-plus mr-1"></i>
+                            Add Files
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Files List -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+                    <div class="p-6 border-b border-slate-200">
+                        <h4 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i class="fas fa-folder-open text-primary-500 mr-2"></i>
+                            Your Files
+                            <span class="ml-2 bg-slate-100 text-slate-600 px-2 py-1 rounded-full text-sm">3 files</span>
+                        </h4>
+                    </div>
+
+                    <div class="p-6 space-y-4">
+                        <!-- @MAP: files.map(file => ( -->
+                        <div class="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-pdf text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-slate-900" data-bind="file.name">project_proposal.pdf</p>
+                                    <div class="flex items-center space-x-4 text-sm text-slate-500">
+                                        <span data-bind="file.size">2.4 MB</span>
+                                        <span data-bind="file.uploadDate">2 hours ago</span>
+                                        <span data-bind="file.uploader" class="text-green-600">by john_doe</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button data-event="click:downloadFile" data-implementation="Download with JWT verification" 
+                                        class="text-blue-600 hover:text-blue-700 p-2 rounded-md hover:bg-blue-50 transition-colors">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <!-- Admin-only delete button -->
+                                <button data-event="click:deleteFile" data-implementation="Only show for admin role" 
+                                        class="text-red-600 hover:text-red-700 p-2 rounded-md hover:bg-red-50 transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-green-100 w-10 h-10 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-excel text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-slate-900" data-bind="file.name">budget_2024.xlsx</p>
+                                    <div class="flex items-center space-x-4 text-sm text-slate-500">
+                                        <span data-bind="file.size">1.2 MB</span>
+                                        <span data-bind="file.uploadDate">1 day ago</span>
+                                        <span data-bind="file.uploader" class="text-blue-600">by admin_user</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button data-event="click:downloadFile" class="text-blue-600 hover:text-blue-700 p-2 rounded-md hover:bg-blue-50 transition-colors">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-purple-100 w-10 h-10 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-image text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-slate-900" data-bind="file.name">team_photo.jpg</p>
+                                    <div class="flex items-center space-x-4 text-sm text-slate-500">
+                                        <span data-bind="file.size">5.8 MB</span>
+                                        <span data-bind="file.uploadDate">3 days ago</span>
+                                        <span data-bind="file.uploader" class="text-green-600">by john_doe</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button data-event="click:downloadFile" class="text-blue-600 hover:text-blue-700 p-2 rounded-md hover:bg-blue-50 transition-colors">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button data-event="click:deleteFile" class="text-red-600 hover:text-red-700 p-2 rounded-md hover:bg-red-50 transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- @END_MAP )) -->
+
+                        <!-- Empty state for no files -->
+                        <div class="hidden text-center py-8" id="empty-files-state">
+                            <i class="fas fa-folder-open text-4xl text-slate-300 mb-4"></i>
+                            <p class="text-slate-500 mb-4">No files uploaded yet</p>
+                            <button class="text-primary-500 hover:text-primary-600 font-medium">
+                                Upload your first file
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Panel (only visible for admin users) -->
+                <!-- @COMPONENT: AdminPanel [admin-only features] -->
+                <div id="admin-panel" class="bg-white rounded-xl shadow-sm border border-slate-200" data-implementation="Only show for admin role">
+                    <div class="p-6 border-b border-slate-200">
+                        <h4 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i class="fas fa-users-cog text-amber-500 mr-2"></i>
+                            Admin Panel
+                        </h4>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="text-center p-4 bg-blue-50 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600" data-bind="stats.totalUsers">5</div>
+                                <div class="text-sm text-blue-800">Total Users</div>
+                            </div>
+                            <div class="text-center p-4 bg-green-50 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600" data-bind="stats.totalFiles">12</div>
+                                <div class="text-sm text-green-800">Total Files</div>
+                            </div>
+                            <div class="text-center p-4 bg-purple-50 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600" data-bind="stats.storageUsed">45.2 MB</div>
+                                <div class="text-sm text-purple-800">Storage Used</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex space-x-3">
+                            <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                <i class="fas fa-users mr-1"></i>
+                                Manage Users
+                            </button>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                <i class="fas fa-trash-alt mr-1"></i>
+                                Cleanup Files
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: AdminPanel -->
+            </div>
+            <!-- @END_COMPONENT: Dashboard -->
+
+            <!-- Loading State -->
+            <!-- @COMPONENT: LoadingState [WebAuthn processing feedback] -->
+            <div id="loading-state" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white rounded-xl p-8 max-w-sm mx-4 text-center">
+                    <div class="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-2">Authenticating...</h3>
+                    <p class="text-slate-600 text-sm">Please use your biometric authenticator</p>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: LoadingState -->
+
+            <!-- Error/Success Messages -->
+            <!-- @COMPONENT: AlertMessages [feedback for user actions] -->
+            <div id="alert-container" class="fixed top-4 right-4 z-40 space-y-2">
+                <!-- Success Alert Template -->
+                <div class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md shadow-lg" id="success-alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span data-bind="alert.message">Authentication successful!</span>
+                        <button class="ml-auto text-green-500 hover:text-green-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Alert Template -->
+                <div class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md shadow-lg" id="error-alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span data-bind="alert.message">Authentication failed. Please try again.</span>
+                        <button class="ml-auto text-red-500 hover:text-red-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: AlertMessages -->
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-slate-200 mt-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-primary-500 mr-2"></i>
+                        <span class="text-slate-600 text-sm">SecureShare - Powered by WebAuthn</span>
+                    </div>
+                    <div class="flex items-center space-x-4 text-sm text-slate-500">
+                        <span>Built with TypeScript & Express</span>
+                        <span>•</span>
+                        <span>JWT Token Security</span>
+                        <span>•</span>
+                        <span>Biometric Authentication</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- @END_COMPONENT: App -->
+
+    <script>
+        // TODO: Implement WebAuthn registration and login flows
+        // TODO: Handle JWT token storage and verification
+        // TODO: Implement file upload/download with proper authentication
+        // TODO: Add role-based UI visibility controls
+        // TODO: Integrate with backend API endpoints
+
+        (function() {
+            // Basic UI state management for demo
+            let currentView = 'welcome';
+            let isAuthenticated = false;
+            let currentUser = null;
+
+            // DOM elements
+            const welcomeSection = document.getElementById('welcome-section');
+            const authForms = document.getElementById('auth-forms');
+            const registerForm = document.getElementById('register-form');
+            const loginForm = document.getElementById('login-form');
+            const dashboard = document.getElementById('dashboard');
+            const authButtons = document.getElementById('auth-buttons');
+            const userMenu = document.getElementById('user-menu');
+            const adminPanel = document.getElementById('admin-panel');
+
+            // Navigation functions
+            function showWelcome() {
+                currentView = 'welcome';
+                welcomeSection.classList.remove('hidden');
+                authForms.classList.add('hidden');
+                dashboard.classList.add('hidden');
+            }
+
+            function showRegister() {
+                currentView = 'register';
+                welcomeSection.classList.add('hidden');
+                authForms.classList.remove('hidden');
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                dashboard.classList.add('hidden');
+            }
+
+            function showLogin() {
+                currentView = 'login';
+                welcomeSection.classList.add('hidden');
+                authForms.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                dashboard.classList.add('hidden');
+            }
+
+            function showDashboard() {
+                currentView = 'dashboard';
+                welcomeSection.classList.add('hidden');
+                authForms.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                
+                // Update header for authenticated state
+                authButtons.classList.add('hidden');
+                userMenu.classList.remove('hidden');
+                
+                // Show/hide admin panel based on role
+                if (currentUser && currentUser.role === 'admin') {
+                    adminPanel.classList.remove('hidden');
+                } else {
+                    adminPanel.classList.add('hidden');
+                }
+            }
+
+            function logout() {
+                isAuthenticated = false;
+                currentUser = null;
+                authButtons.classList.remove('hidden');
+                userMenu.classList.add('hidden');
+                showWelcome();
+                // TODO: Clear JWT token from localStorage
+            }
+
+            // Event listeners for navigation
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[data-event*="showRegister"]')) {
+                    e.preventDefault();
+                    showRegister();
+                }
+                
+                if (e.target.matches('[data-event*="showLogin"]')) {
+                    e.preventDefault();
+                    showLogin();
+                }
+                
+                if (e.target.matches('[data-event*="logout"]')) {
+                    e.preventDefault();
+                    logout();
+                }
+            });
+
+            // Mock authentication for demo
+            document.addEventListener('submit', function(e) {
+                if (e.target.matches('[data-event*="handleRegister"]')) {
+                    e.preventDefault();
+                    // TODO: Implement WebAuthn registration
+                    simulateAuth('register');
+                }
+                
+                if (e.target.matches('[data-event*="handleLogin"]')) {
+                    e.preventDefault();
+                    // TODO: Implement WebAuthn login
+                    simulateAuth('login');
+                }
+            });
+
+            function simulateAuth(type) {
+                const loadingState = document.getElementById('loading-state');
+                loadingState.classList.remove('hidden');
+                
+                // Simulate WebAuthn process
+                setTimeout(() => {
+                    loadingState.classList.add('hidden');
+                    
+                    // Mock successful authentication
+                    isAuthenticated = true;
+                    currentUser = {
+                        username: type === 'register' ? 
+                            document.getElementById('register-username').value : 
+                            document.getElementById('login-username').value,
+                        role: type === 'register' ? 
+                            document.getElementById('register-role').value : 
+                            'user' // Mock role for login
+                    };
+                    
+                    showDashboard();
+                    showSuccessAlert(`${type === 'register' ? 'Registration' : 'Login'} successful!`);
+                }, 2000);
+            }
+
+            function showSuccessAlert(message) {
+                const alert = document.getElementById('success-alert');
+                alert.querySelector('[data-bind="alert.message"]').textContent = message;
+                alert.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    alert.classList.add('hidden');
+                }, 4000);
+            }
+
+            // Initialize
+            showWelcome();
+        })();
+    </script>
+</body>
+</html>

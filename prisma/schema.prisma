@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String   // Hashed password
+  createdAt DateTime @default(now())
+  
+  // Relations
+  credentials Credential[]
+  promises    Promise[]
+  receivedPromises Promise[] @relation("ReceivedPromises")
+  sharedPromises PromiseShare[]
+  
+  @@map("users")
+}
+
+model Credential {
+  id        String   @id
+  userId    String
+  publicKey String
+  counter   Int      @default(0)
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("credentials")
+}
+
+model Promise {
+  id          String    @id @default(uuid())
+  title       String
+  content     String
+  metadata    Json      // Store additional promise metadata
+  encryptedData String  // Encrypted content + private key + fingerprint
+  fingerprint String    // Biometric fingerprint hash
+  credentialId String   // WebAuthn credential ID for validation
+  deliveryDate DateTime? // Optional delivery date
+  recipientId String    // Required recipient
+  status      String    @default("pending") // pending, delivered, verified
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  creatorId   String
+  
+  // Relations
+  creator User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  recipient User @relation("ReceivedPromises", fields: [recipientId], references: [id], onDelete: Cascade)
+  shares  PromiseShare[]
+  certificates PromiseCertificate[]
+  
+  @@map("promises")
+}
+
+model PromiseShare {
+  id        String   @id @default(uuid())
+  promiseId String
+  userId    String
+  canValidate Boolean @default(true)
+  sharedAt  DateTime @default(now())
+  
+  // Relations
+  promise Promise @relation(fields: [promiseId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([promiseId, userId])
+  @@map("promise_shares")
+}
+
+model PromiseCertificate {
+  id          String   @id @default(uuid())
+  promiseId   String
+  certificate String   // Encrypted certificate data
+  publicKey   String   // Public key for validation
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  promise Promise @relation(fields: [promiseId], references: [id], onDelete: Cascade)
+  
+  @@map("promise_certificates")
+}

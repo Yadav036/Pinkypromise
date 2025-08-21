@@ -1,0 +1,31 @@
+npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+3:18:16 PM [express] POST /api/auth/register/options 200 in 2646ms :: {"challenge":"AvZZBpC9X4WtO4WN…
+3:18:19 PM [express] POST /api/auth/register/verify 200 in 930ms :: {"verified":true,"token":"eyJhbG…
+3:18:19 PM [express] GET /api/auth/me 401 in 1ms :: {"error":"No token provided"}
+3:23:59 pm [vite] hmr update /src/App.tsx?v=4WyDhKE5Ay7lL1vRQh6Uh, /src/index.css?v=4WyDhKE5Ay7lL1vRQh6Uh, /src/pages/dashboard.tsx, /src/components/layout/header.tsx, /src/pages/auth.tsx, /src/components/promises/promise-form.tsx, /src/components/promises/promise-list.tsx, /src/components/promises/share-promise-form.tsx, /src/components/auth/webauthn-login.tsx, /src/components/auth/webauthn-register.tsx
+3:24:08 PM [express] GET /api/auth/me 200 in 2789ms :: {"user":{"id":"a9665fcd-299d-464e-a024-4c6700…
+3:24:08 PM [express] GET /api/promises 200 in 690ms :: {"promises":[]}
+Promise creation error: TypeError: crypto.createCipher is not a function
+    at PromiseCrypto.encryptPromise (/Users/yadav/Downloads/AuthShare/server/crypto.ts:33:27)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:255:43)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:149:13)
+    at authenticateJWT (/Users/yadav/Downloads/AuthShare/server/routes.ts:37:9)
+3:24:57 PM [express] POST /api/promises 400 in 558ms :: {"error":"Failed to create promise"}
+Promise creation error: TypeError: crypto.createCipher is not a function
+    at PromiseCrypto.encryptPromise (/Users/yadav/Downloads/AuthShare/server/crypto.ts:33:27)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:255:43)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:149:13)
+    at authenticateJWT (/Users/yadav/Downloads/AuthShare/server/routes.ts:37:9)
+3:25:10 PM [express] POST /api/promises 400 in 334ms :: {"error":"Failed to create promise"}
+3:25:30 PM [express] GET /api/auth/me 304 in 445ms :: {"user":{"id":"a9665fcd-299d-464e-a024-4c6700c…
+3:25:31 PM [express] GET /api/promises 304 in 480ms :: {"promises":[]}
+Promise creation error: TypeError: crypto.createCipher is not a function
+    at PromiseCrypto.encryptPromise (/Users/yadav/Downloads/AuthShare/server/crypto.ts:33:27)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:255:43)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:149:13)
+    at authenticateJWT (/Users/yadav/Downloads/AuthShare/server/routes.ts:37:9)
+3:25:50 PM [express] POST /api/promises 400 in 680ms :: {"error":"Failed to create promise"}

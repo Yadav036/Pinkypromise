@@ -1,0 +1,243 @@
+
+6:44:00 PM [express] serving on port 2000
+➜  AuthShare git:(main) ✗ npm run dev
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+6:45:37 PM [express] serving on http://localhost:2000
+Browserslist: browsers data (caniuse-lite) is 10 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Registration request: { username: 'gokulyadav@mediatattva.com', password: '***' }
+Registration successful: {
+  userId: 'ca4c26aa-9050-4c6b-bd3c-abdecea497a2',
+  username: 'gokulyadav@mediatattva.com'
+}
+6:46:06 PM [express] POST /api/auth/register 200 in 3539ms :: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6…
+6:46:07 PM [express] GET /api/auth/me 200 in 446ms :: {"user":{"id":"ca4c26aa-9050-4c6b-bd3c-abdecea…
+Found 0 promises for user ca4c26aa-9050-4c6b-bd3c-abdecea497a2
+6:46:07 PM [express] GET /api/promises 200 in 461ms :: {"promises":[]}
+6:46:10 PM [express] GET /api/users 200 in 598ms :: {"users":[{"id":"ca4c26aa-9050-4c6b-bd3c-abdecea…
+Promise creation request: {
+  "title": "Mypromise",
+  "content": "I owe you something",
+  "metadata": {},
+  "deliveryDate": "2027-04-27T00:00:00.000Z",
+  "recipientId": "ca4c26aa-9050-4c6b-bd3c-abdecea497a2"
+}
+Promise created successfully: {
+  "id": "dc859069-a5c6-4066-bf04-e7da3be04462",
+  "title": "Mypromise",
+  "creator": "gokulyadav@mediatattva.com",
+  "recipient": "gokulyadav@mediatattva.com"
+}
+6:46:48 PM [express] POST /api/promises 200 in 3370ms :: {"promise":{"id":"dc859069-a5c6-4066-bf04-e…
+6:46:58 PM [express] GET /api/auth/me 304 in 231ms :: {"user":{"id":"ca4c26aa-9050-4c6b-bd3c-abdecea…
+Found 1 promises for user ca4c26aa-9050-4c6b-bd3c-abdecea497a2
+6:47:00 PM [express] GET /api/promises 200 in 1927ms :: {"promises":[{"id":"dc859069-a5c6-4066-bf04-…
+Promise validation error: TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+    at Hash.update (node:internal/crypto/hash:142:11)
+    at PromiseCrypto.hashFingerprint (/Users/yadav/Downloads/AuthShare/server/crypto.ts:128:40)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:346:47) {
+  code: 'ERR_INVALID_ARG_TYPE'
+}
+6:47:04 PM [express] POST /api/promises/dc859069-a5c6-4066-bf04-e7da3be04462/validate 400 in 1238ms …
+6:47:31 PM [express] GET /api/users 304 in 451ms :: {"users":[{"id":"ca4c26aa-9050-4c6b-bd3c-abdecea…
+Registration request: { username: 'InfraTattva', password: '***' }
+Registration successful: {
+  userId: '95765f61-1d18-493e-85e4-274de3f36f74',
+  username: 'InfraTattva'
+}
+6:47:56 PM [express] POST /api/auth/register 200 in 990ms :: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6I…
+6:47:57 PM [express] GET /api/auth/me 200 in 223ms :: {"user":{"id":"95765f61-1d18-493e-85e4-274de3f…
+Found 0 promises for user 95765f61-1d18-493e-85e4-274de3f36f74
+6:47:57 PM [express] GET /api/promises 200 in 258ms :: {"promises":[]}
+Login request: { username: 'InfraTattva', password: '***' }
+Login successful: {
+  userId: '95765f61-1d18-493e-85e4-274de3f36f74',
+  username: 'InfraTattva'
+}
+6:48:04 PM [express] POST /api/auth/login 200 in 534ms :: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpX…
+6:48:04 PM [express] GET /api/auth/me 304 in 223ms :: {"user":{"id":"95765f61-1d18-493e-85e4-274de3f…
+Found 0 promises for user 95765f61-1d18-493e-85e4-274de3f36f74
+6:48:04 PM [express] GET /api/promises 304 in 224ms :: {"promises":[]}
+6:48:06 PM [express] GET /api/users 200 in 232ms :: {"users":[{"id":"95765f61-1d18-493e-85e4-274de3f…
+Promise creation request: {
+  "title": "hey",
+  "content": "wow",
+  "metadata": {},
+  "recipientId": "ca4c26aa-9050-4c6b-bd3c-abdecea497a2"
+}
+Promise created successfully: {
+  "id": "61c1c61b-e885-4eb5-817f-28d2bc3bde60",
+  "title": "hey",
+  "creator": "InfraTattva",
+  "recipient": "gokulyadav@mediatattva.com"
+}
+6:48:18 PM [express] POST /api/promises 200 in 2196ms :: {"promise":{"id":"61c1c61b-e885-4eb5-817f-2…
+6:48:31 PM [express] GET /api/auth/me 304 in 229ms :: {"user":{"id":"95765f61-1d18-493e-85e4-274de3f…
+Found 1 promises for user 95765f61-1d18-493e-85e4-274de3f36f74
+6:48:32 PM [express] GET /api/promises 200 in 1386ms :: {"promises":[{"id":"61c1c61b-e885-4eb5-817f-…
+Promise validation error: TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+    at Hash.update (node:internal/crypto/hash:142:11)
+    at PromiseCrypto.hashFingerprint (/Users/yadav/Downloads/AuthShare/server/crypto.ts:128:40)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:346:47) {
+  code: 'ERR_INVALID_ARG_TYPE'
+}
+6:48:37 PM [express] POST /api/promises/61c1c61b-e885-4eb5-817f-28d2bc3bde60/validate 400 in 683ms :…
+Promise validation error: TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+    at Hash.update (node:internal/crypto/hash:142:11)
+    at PromiseCrypto.hashFingerprint (/Users/yadav/Downloads/AuthShare/server/crypto.ts:128:40)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:346:47) {
+  code: 'ERR_INVALID_ARG_TYPE'
+}
+6:48:38 PM [express] POST /api/promises/61c1c61b-e885-4eb5-817f-28d2bc3bde60/validate 400 in 692ms :…
+6:48:57 PM [express] GET /api/users 304 in 558ms :: {"users":[{"id":"95765f61-1d18-493e-85e4-274de3f…
+Promise share error: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "promiseId"
+    ],
+    "message": "Required"
+  }
+]
+    at get error (file:///Users/yadav/Downloads/AuthShare/node_modules/zod/lib/index.mjs:587:31)
+    at ZodObject.parse (file:///Users/yadav/Downloads/AuthShare/node_modules/zod/lib/index.mjs:663:22)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:164:46)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:149:13)
+    at authenticateJWT (/Users/yadav/Downloads/AuthShare/server/auth.ts:84:7)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:284:15
+    at param (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:365:14)
+    at param (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:376:14)
+    at router.process_params (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:421:3)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:280:10)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/index.ts:55:3)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:328:13)
+    at /Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:286:9
+    at router.process_params (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:280:10)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/index.ts:25:3)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:328:13)
+    at /Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:286:9
+    at router.process_params (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:280:10)
+    at urlencodedParser (/Users/yadav/Downloads/AuthShare/node_modules/body-parser/lib/types/urlencoded.js:85:7)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:328:13)
+    at /Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:286:9
+    at router.process_params (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:280:10)
+    at /Users/yadav/Downloads/AuthShare/node_modules/body-parser/lib/read.js:137:5
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (/Users/yadav/Downloads/AuthShare/node_modules/raw-body/index.js:238:16)
+    at done (/Users/yadav/Downloads/AuthShare/node_modules/raw-body/index.js:227:7)
+    at IncomingMessage.onEnd (/Users/yadav/Downloads/AuthShare/node_modules/raw-body/index.js:287:7)
+    at IncomingMessage.emit (node:events:507:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  issues: [
+    {
+      code: 'invalid_type',
+      expected: 'string',
+      received: 'undefined',
+      path: [Array],
+      message: 'Required'
+    }
+  ],
+  addIssue: [Function (anonymous)],
+  addIssues: [Function (anonymous)],
+  errors: [
+    {
+      code: 'invalid_type',
+      expected: 'string',
+      received: 'undefined',
+      path: [Array],
+      message: 'Required'
+    }
+  ]
+}
+6:49:34 PM [express] POST /api/promises/61c1c61b-e885-4eb5-817f-28d2bc3bde60/share 400 in 10ms :: {"…
+Promise share error: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "promiseId"
+    ],
+    "message": "Required"
+  }
+]
+    at get error (file:///Users/yadav/Downloads/AuthShare/node_modules/zod/lib/index.mjs:587:31)
+    at ZodObject.parse (file:///Users/yadav/Downloads/AuthShare/node_modules/zod/lib/index.mjs:663:22)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/routes.ts:164:46)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:149:13)
+    at authenticateJWT (/Users/yadav/Downloads/AuthShare/server/auth.ts:84:7)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:284:15
+    at param (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:365:14)
+    at param (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:376:14)
+    at router.process_params (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:421:3)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:280:10)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/index.ts:55:3)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:328:13)
+    at /Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:286:9
+    at router.process_params (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:280:10)
+    at <anonymous> (/Users/yadav/Downloads/AuthShare/server/index.ts:25:3)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:328:13)
+    at /Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:286:9
+    at router.process_params (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:280:10)
+    at urlencodedParser (/Users/yadav/Downloads/AuthShare/node_modules/body-parser/lib/types/urlencoded.js:85:7)
+    at Layer.handle [as handle_request] (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:328:13)
+    at /Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:286:9
+    at router.process_params (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/yadav/Downloads/AuthShare/node_modules/express/lib/router/index.js:280:10)
+    at /Users/yadav/Downloads/AuthShare/node_modules/body-parser/lib/read.js:137:5
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (/Users/yadav/Downloads/AuthShare/node_modules/raw-body/index.js:238:16)
+    at done (/Users/yadav/Downloads/AuthShare/node_modules/raw-body/index.js:227:7)
+    at IncomingMessage.onEnd (/Users/yadav/Downloads/AuthShare/node_modules/raw-body/index.js:287:7)
+    at IncomingMessage.emit (node:events:507:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  issues: [
+    {
+      code: 'invalid_type',
+      expected: 'string',
+      received: 'undefined',
+      path: [Array],
+      message: 'Required'
+    }
+  ],
+  addIssue: [Function (anonymous)],
+  addIssues: [Function (anonymous)],
+  errors: [
+    {
+      code: 'invalid_type',
+      expected: 'string',
+      received: 'undefined',
+      path: [Array],
+      message: 'Required'
+    }
+  ]
+}
